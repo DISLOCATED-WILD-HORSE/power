@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.LoginMapper">
+    <resultMap type="User" id="LoginResult">
+        <id column="USERID" jdbcType="VARCHAR" property="userid"/>
+        <result column="USERNAME" jdbcType="VARCHAR" property="username"/>
+        <result column="PASSWORD" jdbcType="VARCHAR" property="password"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <select id="getUser" resultMap="LoginResult" parameterType="map">
+        SELECT USERID,USERNAME,PASSWORD,REMARK FROM `tbluser`
+        <where>
+            <if test="userid!=null and !''.equals(userid)">and USERID = #{userid}</if>
+            <if test="password!=null and !''.equals(password)">and PASSWORD = #{password}</if>
+        </where>
+    </select>
+    <select id="getCount" parameterType="User" resultType="int">
+        SELECT COUNT(*) FROM `tbluser` WHERE USERID = #{userid} AND PASSWORD = #{password}
+    </select>
+</mapper>

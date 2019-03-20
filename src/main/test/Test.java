@@ -21,8 +21,6 @@ public class Test {
         try {
             Thread.sleep(1000 * 1);
         } catch (InterruptedException e) {}
-
-
         logger.info("请求处理结束，耗时：{}毫秒", (System.currentTimeMillis() - beginTime));    //第一种用法
         logger.info("请求处理结束，耗时：" + (System.currentTimeMillis() - beginTime)  + "毫秒");    //第二种用法
 

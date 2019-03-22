@@ -11,7 +11,7 @@
     </resultMap>
 
     <select id="getUser" resultMap="LoginResult" parameterType="map">
-        SELECT USERID,USERNAME,PASSWORD,REMARK FROM `tbluser`
+        SELECT USERID,USERNAME,PASSWORD,REMARK,ISDISABLE FROM `tbluser`
         <where>
             <if test="userid!=null and !''.equals(userid)">and USERID = #{userid}</if>
             <if test="password!=null and !''.equals(password)">and PASSWORD = #{password}</if>

@@ -66,10 +66,11 @@
            dataType:'json',
            success:function (result) {
                toastr.success(result.message);
-               window.open("login.jsp","_self");
+               setTimeout("window.open('login.jsp','_self')",1000);
+
            },
            error:function (rv) {
-               toastr.success(rv.message);
+               toastr.error(rv.message);
            }
         });
     });

@@ -5,6 +5,7 @@ public class User {
     private String username;
     private String password;
     private String remark;
+    private boolean isdisable;
 
     public String getUserid() {
         return userid;
@@ -36,5 +37,13 @@ public class User {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public boolean isIsdisable() {
+        return isdisable;
+    }
+
+    public void setIsdisable(boolean isdisable) {
+        this.isdisable = isdisable;
     }
 }

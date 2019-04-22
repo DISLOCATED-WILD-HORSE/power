@@ -3,16 +3,19 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!--扫描controller包-->
     <context:component-scan base-package="controller"/>
+    <context:component-scan base-package="exception"/>
+
+    <mvc:default-servlet-handler/>
+
     <!-- 注解驱动：配置处理器映射器和适配器 -->
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -38,56 +41,11 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    <!--多视图解析器-->
-    <!--<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="favorParameter" value="true"/>
-        <property name="defaultContentType" value="text/html"/>
-        <property name="mediaTypes">
-            <map>
-                <entry key="html" value="text/html;charset=UTF-8"/>
-                <entry key="json" value="application/json;charset=UTF-8"/>
-                <entry key="xml" value="application/xml;charset=UTF-8"/>
-            </map>
-        </property>
-        <property name="viewResolvers">
-            <list>
-                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                    <property name="prefix" value="/WEB-INF/jsp/"/>
-                    <property name="suffix" value=".jsp"/>
-                </bean>
-            </list>
-        </property>
-    </bean>-->
-    <!-- 协商多种视图解析器 -->
-    <!--<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="0">
-        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
-        <property name="defaultViews">
-            <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"
-                      p:modelKeys="userList"/>
-                <bean class="org.springframework.web.servlet.view.xml.MarshallingView"
-                      p:modelKey="userList" p:marshaller-ref="xmlMarshaller"/>
-            </list>
-        </property>
+    <!---配置MultipartResolver,用于上传文件，使用spring的CommonsMultipartResolver-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5000000"/>
+        <property name="defaultEncoding" value="UTF-8"/>
     </bean>
-    <bean id="contentNegotiationManager"
-          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"
-          p:ignoreAcceptHeader="true"
-          p:favorPathExtension="false"
-          p:favorParameter="true"
-          p:parameterName="format"
-          p:defaultContentType="text/html">
-        <property name="mediaTypes">
-            <value>
-                html=text/html
-                xml=application/xml
-                json=application/json
-            </value>
-        </property>
-    </bean>-->
     <!--静态资源文件的映射-->
-    <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
-    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
-    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
-    <mvc:resources mapping="/layui/**" location="/layui/"/>
+    <mvc:resources mapping="/layuiadmin/**" location="/layuiadmin/"/>
 </beans>

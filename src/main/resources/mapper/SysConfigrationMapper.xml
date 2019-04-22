@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SystemConfigrationMapper">
+    <select id="getConfigTypeInfo" resultType="Sys_Configration_Type">
+        select `ID`,`TYPEID`,`NAME`,`DESCRIBE`,`ISENABLE` from `sys_configration_type`
+    </select>
+
+    <select id="getConfigDataInfoByID" parameterType="string" resultType="Sys_Configration_Data">
+        select `ID`,`NAME`,`TYPEID` from `sys_configration_data`
+        <where>
+            <if test="typeId!=null and typeId!=''">
+                `TYPEID` = #{typeId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertConfigTypeData">
+        insert into `sys_configration_type` (`TYPEID`,`NAME`,`DESCRIBE`,`ISENABLE`) values
+        <foreach collection="list" item="item" index="index" open="" separator="," close="">
+            (#{item.typeId},
+            #{item.name},
+            #{item.describe},
+            #{item.isEnable})
+        </foreach>
+    </insert>
+
+    <update id="updateConifgTypeData">
+        update `sys_configration_type`
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="TYPEID =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.typeId!=null">
+                        when `ID`=#{item.id} then #{item.typeId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="NAME =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                <if test="item.name!=null">
+                    when `ID`=#{item.id} then #{item.name}
+                </if>
+                </foreach>
+            </trim>
+            <trim prefix="`DESCRIBE` =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.describe!=null">
+                        when `ID`=#{item.id} then #{item.describe}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="ISENABLE =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.isEnable!=null">
+                        when `ID`=#{item.id} then #{item.isEnable}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" index="index" item="item" separator="or">
+            `ID` = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getCountByID" resultType="integer">
+        select count(*) from `sys_configration_type` where `ID` = #{id}
+    </select>
+
+    <delete id="deleteConfigType">
+        delete from `sys_configration_type` where `ID` = #{id}
+    </delete>
+
+    <delete id="deleteConfigData">
+        delete from `sys_configration_data` where `TYPEID` = #{typeId}
+        <if test="id!=null and id!=''">
+            and `ID` = #{id}
+        </if>
+    </delete>
+
+
+    <insert id="insertConfigDataInfo">
+        insert into `sys_configration_data` (`ID`,`NAME`,`TYPEID`) values
+        <foreach collection="list" item="item" index="index" open="" separator="," close="">
+            (#{item.id},
+            #{item.name},
+            #{item.typeId})
+        </foreach>
+    </insert>
+
+    <update id="updateConifgDataInfo">
+        update `sys_configration_data`
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="ID =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.id!=null">
+                        when `ID`=#{item.id} then #{item.id}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="NAME =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.name!=null">
+                        when `ID`=#{item.id} then #{item.name}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" index="index" item="item" separator="or">
+            `ID` = #{item.id} and `TYPEID` = #{item.typeId}
+        </foreach>
+    </update>
+
+    <select id="getDataCountByID" resultType="integer">
+        select count(*) from `sys_configration_data` where `ID` = #{id} and `TYPEID` = #{typeId}
+    </select>
+</mapper>

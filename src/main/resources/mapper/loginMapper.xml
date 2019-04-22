@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.LoginMapper">
+    <!--用户表字段映射-->
     <resultMap type="User" id="LoginResult">
         <id column="USERID" jdbcType="VARCHAR" property="userid"/>
         <result column="USERNAME" jdbcType="VARCHAR" property="username"/>
@@ -10,14 +11,42 @@
         <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <!--角色表字段映射-->
+    <resultMap id="RoleResult" type="Role">
+        <id column="ROLEID" jdbcType="INTEGER" property="roleId"/>
+        <result column="ROLENAME" jdbcType="VARCHAR" property="roleName"/>
+        <result column="CREATEUSER" jdbcType="VARCHAR" property="createUser"/>
+        <result column="MODIFYDATE" jdbcType="DATE" property="modifyDate"/>
+        <result column="ISACTIVE" jdbcType="INTEGER" property="isactive"/>
+    </resultMap>
+
+    <!--<resultMap id="Role_User_Result" type="Role_User">-->
+        <!--<id column="ID" jdbcType="INTEGER" property="id"/>-->
+        <!--<result column="USERID" jdbcType="VARCHAR" property="userid"/>-->
+        <!--<result column="ROLEID" jdbcType="INTEGER" property="roleid"/>-->
+    <!--</resultMap>-->
+
+    <!--根据用户编号和密码获取用户信息-->
     <select id="getUser" resultMap="LoginResult" parameterType="map">
-        SELECT USERID,USERNAME,PASSWORD,REMARK,ISDISABLE FROM `tbluser`
+        SELECT USERID,USERNAME,PASSWORD,REMARK,ISDISABLE,idPicPath,SEX,PHONE,EMAIL FROM `tbluser`
         <where>
             <if test="userid!=null and !''.equals(userid)">and USERID = #{userid}</if>
             <if test="password!=null and !''.equals(password)">and PASSWORD = #{password}</if>
         </where>
     </select>
+
+    <!--根据用户编号和密码查询用户数量-->
     <select id="getCount" parameterType="User" resultType="int">
         SELECT COUNT(*) FROM `tbluser` WHERE USERID = #{userid} AND PASSWORD = #{password}
+    </select>
+
+    <!--根据用户编号从用户角色关联表查询角色编号-->
+    <select id="getRoleId" parameterType="String" resultType="integer">
+        SELECT ROLEID FROM `role_user` WHERE USERID = #{userid}
+    </select>
+
+    <!--根据角色编号查询用户所属角色信息-->
+    <select id="getRole" parameterType="int" resultMap="RoleResult">
+        SELECT ROLEID,ROLENAME,CREATEUSER,MODIFYDATE,ISACTIVE FROM `role` WHERE ROLEID = #{roleid}
     </select>
 </mapper>

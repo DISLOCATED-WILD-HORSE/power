@@ -19,10 +19,8 @@
             <li class="layui-nav-item layui-nav-itemed">
                 <a class="" href="javascript:;">我的工作平台</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">列表一</a></dd>
-                    <dd><a href="javascript:;">列表二</a></dd>
-                    <dd><a href="javascript:;">列表三</a></dd>
-                    <dd><a href="">超链接</a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/user/toPersonal">个人资料</a></dd>
+                    <dd><a href="javascript:;">待办列表</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">

@@ -43,6 +43,7 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
+            <li class="layui-nav-item">${sessionScope.role.roleName}</li>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/login/loginout">注销账户</a></li>
         </ul>
     </div>

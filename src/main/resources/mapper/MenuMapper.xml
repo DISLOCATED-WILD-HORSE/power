@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.MenuMapper">
+    <select id="getMenuList" resultType="Menu">
+        select * from `menu` where LEVEL = #{level}
+
+            <if test="parentId != null">
+                and PARENTID = #{parentId}
+            </if>
+    </select>
+
+    <!--根据角色编号获取菜单编号-->
+    <select id="getMenuIdByRoleId" parameterType="integer" resultType="java.lang.String">
+        select MENUID from `role_menu` where ROLEID = #{roleId}
+    </select>
+
+    <select id="getMenuListByMenuID" resultType="Menu">
+        select * from `menu` where MENUID in
+        <foreach collection="array" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteMenuPower">
+        delete from `role_menu` where ROLEID = #{roleId}
+    </delete>
+
+    <insert id="addMenuPower">
+        insert into `role_menu` (ROLEID,MENUID) values (#{roleId},#{menuId})
+    </insert>
+
+    <select id="isExsit" parameterType="integer" resultType="int">
+        select count(*) from `role_menu` where ROLEID = #{roleId}
+    </select>
+</mapper>

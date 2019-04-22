@@ -1,6 +1,10 @@
 package mapper;
 
+import entity.Menu;
+import entity.User;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserMapper {
     /*
@@ -11,4 +15,30 @@ public interface UserMapper {
     *修改密码
      */
     int updatePwd(@Param("userid") String userid,@Param("newPassword") String newPassword);
+
+    /*
+    *查询用户表总记录数
+     */
+    int getUserCount();
+    /*
+    *分页查询用户列表信息
+     */
+    List<User> getUserList(@Param("pageSize") int pageSize, @Param("currentPage") int currentPage);
+
+    /*
+    *修改用户表
+     */
+    int updateUser(User user);
+
+    /**
+     * 根据登录的用户编号获取菜单编号列表
+     */
+    String getMenuId(String userid);
+
+    /**
+     * 根据菜单ID列表查询菜单列表
+     * @param menuIdArray
+     * @return
+     */
+    List<Menu> getMenuListByID(String [] menuIdArray);
 }

@@ -1,5 +1,6 @@
 package service.impl;
 
+import entity.Role;
 import entity.User;
 import mapper.LoginMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -29,5 +30,23 @@ public class LoginServiceImpl implements LoginService {
             result = loginMapper.getCount(user);
         }
         return result;
+    }
+
+    @Override
+    public Integer getRoleId(String userid){
+        int result = 0;
+        if(StringUtils.isNotBlank(userid)){
+            result = loginMapper.getRoleId(userid);
+        }
+        return result;
+    }
+
+    @Override
+    public Role getRole(Integer roleid){
+        Role role = new Role();
+        if(roleid!=null){
+            role = loginMapper.getRole(roleid);
+        }
+        return role;
     }
 }

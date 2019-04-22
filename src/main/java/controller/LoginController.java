@@ -1,12 +1,11 @@
 package controller;
 
 import common.JsonResult;
+import entity.Role;
 import entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import service.LoginService;
 
 import javax.annotation.Resource;
@@ -20,23 +19,37 @@ public class LoginController {
     private LoginService loginService;
 
     /*
-    *用户登录
+    *用户登录(返回前段页面JSON数据)
      */
-    @RequestMapping(value = "/getForm" , method = RequestMethod.POST)
-    public String login(Model model, HttpServletRequest request, @RequestParam String userid, @RequestParam String password){
+    @RequestMapping(value = "/loginIn" , method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult login(Model model, HttpServletRequest request, @RequestParam String userid, @RequestParam String password){
         User user = loginService.login(userid,password);
+        String basePath = "http://localhost:8080";
+        user.setIdPicPath(basePath+user.getIdPicPath());
         if(user!=null){
             if(user.isIsdisable()){
+                Integer roleId = loginService.getRoleId(userid);
+                Role role = loginService.getRole(roleId);
                 request.getSession().setAttribute("user",user);
-                return "index";
+                request.getSession().setAttribute("role",role);
+                return JsonResult.success("登入成功");
             }else {
-                model.addAttribute("error","账号未激活");
-                return "forward:/login.jsp";
+                //model.addAttribute("error","账号未激活");
+                return JsonResult.error("账号未激活");
             }
         }else{
-            model.addAttribute("error","用户名或密码不对");
-            return "forward:/login.jsp";
+            //model.addAttribute("error","用户名或密码不对");
+            return JsonResult.error("用户名或密码不对");
         }
+    }
+
+    /*
+    *登录成功后页面跳转
+     */
+    @RequestMapping("/toLogin")
+    public String toLogin(){
+        return "index1";
     }
 
     @RequestMapping(value = "/getForm2", method = RequestMethod.POST)
@@ -57,7 +70,16 @@ public class LoginController {
         String path = request.getContextPath();
         // 拼接跳转页面路径
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-        System.out.println(basePath);
-        return "redirect:"+basePath+"login.jsp";
+        return "redirect:"+basePath+"login1.jsp";
+    }
+
+
+    @GetMapping("/test")
+    public JsonResult test(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user!=null){
+            return JsonResult.success("");
+        }
+        return null;
     }
 }

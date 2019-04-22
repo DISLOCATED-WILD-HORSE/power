@@ -10,6 +10,12 @@ public class Test {
     public static void main(String[] args) {
         long beginTime = System.currentTimeMillis();
 
+        String text = "1,2,3,4,5";
+        String text2 = "'"+text.replace(",","','")+"'";
+        System.out.println(text2);
+        System.out.println("系统配置类型更新和保存异常！");
+        logger.error("系统配置类型更新和保存异常！");
+
         for(int i = 0; i < 10; i++) {
             logger.trace("trace level");
             logger.debug("debug level");
@@ -23,6 +29,8 @@ public class Test {
         } catch (InterruptedException e) {}
         logger.info("请求处理结束，耗时：{}毫秒", (System.currentTimeMillis() - beginTime));    //第一种用法
         logger.info("请求处理结束，耗时：" + (System.currentTimeMillis() - beginTime)  + "毫秒");    //第二种用法
+
+
 
     }
 }

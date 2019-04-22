@@ -12,4 +12,38 @@
         update `tbluser` set PASSWORD = #{newPassword}
         where USERID = #{userid}
     </update>
+
+    <!--查询用户表总记录数-->
+    <select id="getUserCount" resultType="int">
+        SELECT COUNT(*) FROM `tbluser`
+    </select>
+
+    <select id="getUserList" parameterType="int" resultType="User">
+        SELECT USERID,USERNAME,REMARK,ISDISABLE FROM `tbluser` limit ${(currentPage-1)*pageSize},${pageSize}
+    </select>
+
+    <!--修改用户信息-->
+    <update id="updateUser" parameterType="User">
+        UPDATE `tbluser`
+        SET USERNAME=#{username},SEX=#{sex},PHONE=#{phone},
+        EMAIL=#{email},REMARK=#{remark},idPicPath=#{idPicPath}
+        WHERE USERID=#{userid}
+    </update>
+
+    <resultMap id="menuResult" type="Menu">
+        <id property="menuId" jdbcType="INTEGER" column="MENUID"/>
+        <result property="menuName" jdbcType="VARCHAR" column="MENUNAME"/>
+        <result property="menuSrc" jdbcType="VARCHAR" column="MENUSRC"/>
+        <result property="parentId" jdbcType="INTEGER" column="PARENTID"/>
+    </resultMap>
+    <!--根据登录的用户编号获取菜单编号列表-->
+    <select id="getMenuId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT MENUID FROM `role_menu` WHERE ROLEID = (SELECT ROLEID FROM `role_user` WHERE USERID = #{userid})
+    </select>
+    <select id="getMenuListByID" resultMap="menuResult">
+        SELECT * FROM `menu` WHERE MENUID in
+        <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

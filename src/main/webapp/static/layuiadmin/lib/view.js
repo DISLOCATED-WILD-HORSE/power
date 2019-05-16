@@ -136,23 +136,28 @@ layui.define(['laytpl', 'layer'], function(exports){
     delete options.success;
     delete options.skin;
     
-    return layer.open($.extend({
-      type: 1
-      ,title: '提示'
-      ,content: ''
-      ,id: 'LAY-system-view-popup'
-      ,skin: 'layui-layer-admin' + (skin ? ' ' + skin : '')
-      ,shadeClose: true
-      ,closeBtn: false
-      ,success: function(layero, index){
-        var elemClose = $('<i class="layui-icon" close>&#x1006;</i>');
-        layero.append(elemClose);
-        elemClose.on('click', function(){
-          layer.close(index);
-        });
-        typeof success === 'function' && success.apply(this, arguments);
-      }
-    }, options))
+    // return layer.open($.extend({
+    //   type: 1
+    //   ,title: '提示'
+    //   ,content: ''
+    //   ,id: 'LAY-system-view-popup'
+    //   ,skin: 'layui-layer-admin' + (skin ? ' ' + skin : '')
+    //   ,shadeClose: true
+    //   ,closeBtn: false
+    //   ,success: function(layero, index){
+    //     var elemClose = $('<i class="layui-icon" close>&#x1006;</i>');
+    //     layero.append(elemClose);
+    //     elemClose.on('click', function(){
+    //       layer.close(index);
+    //     });
+    //     typeof success === 'function' && success.apply(this, arguments);
+    //   }
+    // }, options))
+    return layer.msg(options.content,{
+      offset:'15px',
+      icon:2,
+      area:'500px'
+    })
   };
   
   //异常提示

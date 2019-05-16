@@ -18,8 +18,28 @@ public class Page<T> {
     //每页的显示数据
     List<T> list = new ArrayList<>();
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
     }
 
     public void setList(List<T> list) {

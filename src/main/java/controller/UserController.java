@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -138,12 +137,9 @@ private UserService userService;
     @RequestMapping("/menu")
     @ResponseBody
     public JsonResult getMenuById(HttpServletRequest request){
-        User user = (User) request.getSession().getAttribute("user");
-        String menuIds = userService.getMenuId(user.getUserid());
-        String [] menuidArray = menuIds.split(",");
-
+        String menuIds = request.getSession().getAttribute("menuIds").toString();
+        String [] menuidArray = menuIds.substring(1,menuIds.length()-1).split(",");
         List<Menu> menuList = userService.getMenuListByID(menuidArray);
-
         if(menuList!=null&&menuList.size()>0){
             request.getSession().setAttribute("menuList",menuList);
             return JsonResult.success("S");

@@ -2,7 +2,6 @@ package service;
 
 import entity.Menu;
 import entity.User;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,11 +29,6 @@ public interface UserService {
     *修改用户表信息
      */
     boolean updateUserInfo(User user);
-
-    /**
-     * 根据登录的用户编号获取菜单编号列表
-     */
-    String getMenuId(String userid);
 
     /**
      * 根据菜单ID列表查询菜单列表

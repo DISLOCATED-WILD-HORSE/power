@@ -4,11 +4,12 @@ import entity.Role;
 import entity.User;
 import mapper.LoginMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.LoginService;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("loginService")
 public class LoginServiceImpl implements LoginService {
@@ -33,8 +34,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Integer getRoleId(String userid){
-        int result = 0;
+    public String getRoleId(String userid){
+        String result="";
         if(StringUtils.isNotBlank(userid)){
             result = loginMapper.getRoleId(userid);
         }
@@ -42,11 +43,31 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Role getRole(Integer roleid){
-        Role role = new Role();
-        if(roleid!=null){
-            role = loginMapper.getRole(roleid);
+    public List<Role> getRole(String roleid){
+        List<String> roleIds = new ArrayList<>();
+        String [] roleIdArray = roleid.split(",");
+        for (String item : roleIdArray){
+            roleIds.add(item);
         }
-        return role;
+        List<Role> roleList = new ArrayList<>();
+        if(roleid!=null){
+            roleList = loginMapper.getRole(roleIds);
+        }
+        return roleList;
+    }
+
+    @Override
+    public List<String> getMenuId(String userid){
+        if(StringUtils.isNotBlank(userid)){
+            String roleIds = loginMapper.getRoleIdByUserId(userid);
+            String [] roleIdArray = new String[1000];
+            if(roleIds.contains(",")){
+                roleIdArray = roleIds.split(",");
+            }else{
+                roleIdArray[0]=roleIds;
+            }
+            return loginMapper.getMenuIdByRoleId(roleIdArray);
+        }
+        return null;
     }
 }

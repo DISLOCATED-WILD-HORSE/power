@@ -31,11 +31,6 @@ public interface UserMapper {
     int updateUser(User user);
 
     /**
-     * 根据登录的用户编号获取菜单编号列表
-     */
-    String getMenuId(String userid);
-
-    /**
      * 根据菜单ID列表查询菜单列表
      * @param menuIdArray
      * @return

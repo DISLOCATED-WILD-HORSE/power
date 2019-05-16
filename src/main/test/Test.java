@@ -1,36 +1,39 @@
 
+import common.Page;
+import entity.Role;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import service.RoleService;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/aplicationConfig.xml")
 public class Test {
-
+@Resource
+private RoleService roleService;
     // Logger和LoggerFactory导入的是org.slf4j包
 //    private final static Logger logger = LogManager.getLogger(Test.class);
     private final static Logger logger = LoggerFactory.getLogger(Test.class);
     public static void main(String[] args) {
-        long beginTime = System.currentTimeMillis();
 
-        String text = "1,2,3,4,5";
-        String text2 = "'"+text.replace(",","','")+"'";
-        System.out.println(text2);
-        System.out.println("系统配置类型更新和保存异常！");
-        logger.error("系统配置类型更新和保存异常！");
 
-        for(int i = 0; i < 10; i++) {
-            logger.trace("trace level");
-            logger.debug("debug level");
-            logger.info("info level");
-            logger.warn("warn level");
-            logger.error("error level");
+    }
+    @org.junit.Test
+    public void test(){
+        Map<String, Object> hashMap = new HashMap<>();
+        hashMap.put("currentPage", 1);
+        hashMap.put("pageSize", 2);
+        hashMap.put("roleName","消");
+        hashMap.put("isactive",1);
+        Page<Role> roleList = roleService.getRoleListAndCount(hashMap);
+        for (Role item : roleList.getList()){
+            System.out.println(item.getRoleId()+","+item.getRoleName());
         }
-
-        try {
-            Thread.sleep(1000 * 1);
-        } catch (InterruptedException e) {}
-        logger.info("请求处理结束，耗时：{}毫秒", (System.currentTimeMillis() - beginTime));    //第一种用法
-        logger.info("请求处理结束，耗时：" + (System.currentTimeMillis() - beginTime)  + "毫秒");    //第二种用法
-
-
-
     }
 }

@@ -55,14 +55,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getMenuId(String userid){
-        if(StringUtils.isNotBlank(userid)){
-            return userMapper.getMenuId(userid);
-        }
-        return null;
-    }
-
-    @Override
     public List<Menu> getMenuListByID(String[] menuIdArray){
         if(menuIdArray!=null&&menuIdArray.length>0){
             return userMapper.getMenuListByID(menuIdArray);

@@ -11,9 +11,9 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="<%=basePath%>layuiadmin/layui/css/layui.css" media="all">
-  <link rel="stylesheet" href="<%=basePath%>layuiadmin/style/admin.css" media="all">
-  <link rel="stylesheet" href="<%=basePath%>layuiadmin/style/login.css" media="all">
+  <link rel="stylesheet" href="<%=basePath%>static/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="<%=basePath%>static/layuiadmin/style/admin.css" media="all">
+  <link rel="stylesheet" href="<%=basePath%>static/layuiadmin/style/login.css" media="all">
 </head>
 <body>
 
@@ -89,10 +89,10 @@
     
   </div>
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-  <script src="<%=basePath%>layuiadmin/layui/layui.js"></script>
+  <script src="<%=basePath%>static/layuiadmin/layui/layui.js"></script>
   <script>
   layui.config({
-    base: '<%=basePath%>layuiadmin/' //静态资源所在路径
+    base: '<%=basePath%>static/layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
   }).use(['index', 'user'], function(){
@@ -107,41 +107,56 @@
 
     //提交
     form.on('submit(LAY-user-login-submit)', function(obj){
-
       //请求登入接口
       admin.req({
         url: '${pageContext.request.contextPath}/login/loginIn' //实际使用请改成服务端真实接口
         ,type:'POST'
         ,data: obj.field
-        ,done: function(res){
-          //请求成功后，写入 access_token
-          // layui.data(setter.tableName, {
-          //   key: setter.request.tokenName
-          //   ,value: res.data.access_token
-          // });
-          $.ajax({
-            type:'POST',
-            url:'${pageContext.request.contextPath}/user/menu',
-            data:{},
-            dataType:'json',
-            success:function (rs) {
-              if(rs.message=="S"){
-                //登入成功的提示与跳转
-                layer.msg('登入成功', {
-                  offset: '15px'
-                  ,icon: 1
-                  ,time: 1000
-                });
-                location.href = '${pageContext.request.contextPath}/login/toLogin'; //后台主页
+        ,success: function(res){
+          if(res.code==1){
+             $.ajax({
+              type:'POST',
+              url:'${pageContext.request.contextPath}/user/menu',
+              data:{},
+              dataType:'json',
+              success:function (rs) {
+                if(rs.code==1){
+                  //登入成功的提示与跳转
+                  layer.msg(res.message, {
+                    offset: '15px'
+                    ,icon: 1
+                    ,time: 1000
+                  });
+                  setTimeout(location.href='${pageContext.request.contextPath}/login/toLogin',3000);
+                  <%--location.href = '${pageContext.request.contextPath}/login/toLogin'; //后台主页--%>
+                }else{
+                  layer.msg(rs.message,{
+                    offset:'15px',
+                    icon:2
+                  });
+                }
               }
-            }
-          });
+            });
+          }
+        },
+        error:function (res) {
+          console.log(res)
         }
+
       });
 
     });
 
-
+//页面一打开就执行弹层
+    layer.ready(function(){
+      var msg = "${msg}";
+      if(msg!=null&&msg!=''){
+        layer.msg(msg,{
+          offset:'15px',
+          icon:2
+        });
+      }
+    });
     //实际使用时记得删除该代码
     // layer.msg('为了方便演示，用户名密码可随意输入', {
     //   offset: '15px'

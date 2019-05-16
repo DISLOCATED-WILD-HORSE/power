@@ -8,12 +8,12 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>layuiAdmin 角色管理 iframe 框</title>
+    <title>layuiAdmin 角色权限 iframe 框</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="<%=basePath%>layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="<%=basePath%>static/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="<%=basePath%>static/zTree_v3/css/demo.css" type="text/css">
     <link rel="stylesheet" href="<%=basePath%>static/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -47,10 +47,10 @@
     </div>
 </div>
 
-<script src="<%=basePath%>layuiadmin/layui/layui.js"></script>
+<script src="<%=basePath%>static/layuiadmin/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '<%=basePath%>layuiadmin/' //静态资源所在路径
+        base: '<%=basePath%>static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'form', 'layer'], function () {

@@ -10,7 +10,7 @@
 
     </Appenders>
     <Loggers>
-        <logger name="mapper.SystemConfigrationMapper" level="debug" additivity="false">
+        <logger name="mapper" level="debug" additivity="false">
             <appender-ref ref="Console"/>
         </logger>
         <Root level="error">

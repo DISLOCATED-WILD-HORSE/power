@@ -13,6 +13,7 @@
     <!--扫描controller包-->
     <context:component-scan base-package="controller"/>
     <context:component-scan base-package="exception"/>
+    <context:component-scan base-package="interceptor"/>
 
     <mvc:default-servlet-handler/>
 
@@ -47,5 +48,14 @@
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
     <!--静态资源文件的映射-->
-    <mvc:resources mapping="/layuiadmin/**" location="/layuiadmin/"/>
+    <!--<mvc:resources mapping="/static/layuiadmin/**" location="/static/layuiadmin/"/>-->
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/loginIn"/>
+            <mvc:exclude-mapping path="/static/**"/>
+            <bean class="interceptor.GlobalInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

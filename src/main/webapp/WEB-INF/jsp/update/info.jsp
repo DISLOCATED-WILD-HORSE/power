@@ -13,8 +13,8 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="<%=basePath%>layuiadmin/layui/css/layui.css" media="all">
-  <link rel="stylesheet" href="<%=basePath%>layuiadmin/style/admin.css" media="all">
+  <link rel="stylesheet" href="<%=basePath%>static/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="<%=basePath%>static/layuiadmin/style/admin.css" media="all">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
                 <label class="layui-form-label">我的角色</label>
                 <div class="layui-input-inline">
                   <select name="roleName" lay-verify="">
-                    <option value="1" selected>${sessionScope.role.roleName}</option>
+                    <option value="1" selected></option>
                     <option value="1" disabled>系统管理员</option>
                     <option value="2" disabled>线路管理员</option>
                     <option value="3" disabled>巡检员</option>
@@ -109,10 +109,10 @@
     </div>
   </div>
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-  <script src="<%=basePath%>layuiadmin/layui/layui.js"></script>
+  <script src="<%=basePath%>static/layuiadmin/layui/layui.js"></script>
   <script>
   layui.config({
-    base: '<%=basePath%>layuiadmin/' //静态资源所在路径
+    base: '<%=basePath%>static/layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
   }).use(['index', 'set'],function () {

@@ -6,4 +6,129 @@
     <select id="getRoleList" resultType="Role">
         select ROLEID,ROLENAME,CREATEUSER,MODIFYDATE,ISACTIVE from `role`
     </select>
+
+    <!--分页查询-->
+    <resultMap id="RoleMap" type="Role">
+        <id column="ROLEID" jdbcType="INTEGER" property="roleId"/>
+        <result column="ROLENAME" jdbcType="VARCHAR" property="roleName"/>
+        <result column="CREATEUSER" jdbcType="VARCHAR" property="createUser"/>
+        <result column="MODIFYDATE" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="ISACTIVE" jdbcType="INTEGER" property="isactive"/>
+    </resultMap>
+
+    <select id="getRoleList1" parameterType="hashmap" resultMap="RoleMap">
+        select ROLEID,ROLENAME,CREATEUSER,MODIFYDATE,ISACTIVE from `role`
+        <where>
+            <if test="roleName!=null">
+                <bind name="roleName" value="'%' + roleName + '%'" />
+                ROLENAME like #{roleName}
+            </if>
+            <if test="isActive!=null">
+                and ISACTIVE = #{isActive}
+            </if>
+        </where>
+        order by MODIFYDATE
+        limit
+        <bind name="currentPage" value="(currentPage-1)*pageSize"/>
+         #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <select id="getRoleCount" parameterType="hashmap" resultType="int">
+        select count(*) from `role`
+        <where>
+            <if test="roleName!=null">
+                <bind name="roleName" value="'%' + roleName + '%'" />
+                ROLENAME like #{roleName}
+            </if>
+            <if test="isActive!=null">
+                and ISACTIVE = #{isActive}
+            </if>
+        </where>
+    </select>
+
+    <!--新增角色-->
+    <insert id="addRole" parameterType="Role">
+        insert into `role` (ROLEID,ROLENAME,CREATEUSER,MODIFYDATE,ISACTIVE)
+        values (#{roleId},#{roleName},#{createUser},#{modifyDate},#{isactive})
+    </insert>
+
+    <!--删除角色-->
+    <delete id="deleteRoleByRoleId">
+        delete from `role`
+        <where>
+            <if test="roles!=null">
+                ROLEID in
+                <foreach collection="roles" index="index" item="item" open="(" separator="," close=")">
+                    #{item.roleId}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <!--删除角色前查看该角色是否存在角色用户表-->
+    <select id="getRoleUserCountByRoleId" parameterType="Role" resultType="int">
+        select count(*) from `role_user`
+        <where>
+            <if test="roles!=null">
+                ROLEID in
+                <foreach collection="roles" index="index" item="item" open="(" separator="," close=")">
+                    #{item.roleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--删除角色前查看该角色是否存在角色菜单表-->
+    <select id="getRoleMenuCountByRoleId" parameterType="Role" resultType="int">
+        select count(*) from `role_menu`
+        <where>
+            <if test="roles!=null">
+                ROLEID in
+                <foreach collection="roles" index="index" item="item" open="(" separator="," close=")">
+                    #{item.roleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--根据角色ID删除角色用户表记录-->
+    <delete id="deleteRoleUserByRoleId" parameterType="Role">
+        delete from `role_user`
+        <where>
+            <if test="roles!=null">
+                ROLEID in
+                <foreach collection="roles" index="index" item="item" open="(" separator="," close=")">
+                    #{item.roleId}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <!--根据角色ID删除角色菜单表记录-->
+    <delete id="deleteRoleMenuByRoleId" parameterType="Role">
+        delete from `role_menu`
+        <where>
+            <if test="roles!=null">
+                ROLEID in
+                <foreach collection="roles" index="index" item="item" open="(" separator="," close=")">
+                    #{item.roleId}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <!--更新角色表-->
+    <update id="updateRole" parameterType="Role">
+        update `role` set ROLENAME = #{role.roleName},CREATEUSER = #{role.createUser},MODIFYDATE = #{role.modifyDate},ISACTIVE = #{role.isactive}
+        <where>
+            <if test="role!=null">
+                ROLEID = #{role.roleId}
+            </if>
+        </where>
+    </update>
+
+    <!--根据用户编号查看所在角色的信息-->
+    <select id="getRoleByUserId" parameterType="string" resultMap="RoleMap">
+        select * from `role` where ROLEID = (select ROLEID from `role_user` where USERID = #{userId})
+    </select>
 </mapper>

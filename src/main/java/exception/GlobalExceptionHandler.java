@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> map = new HashMap<>();
         logger.error(e.getMessage());
         logger.error(e.getCause().toString());
-        map.put("info", "error");
+        map.put("message", e.getMessage());
         return map;
     }
 }

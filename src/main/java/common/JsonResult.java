@@ -1,16 +1,21 @@
 package common;
 
-import java.io.Serializable;
-
 public class JsonResult{
     private int code;
     private String message;
     private Object data;
+    private int count;
 
     private JsonResult(int code, String message, Object data) {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+    private JsonResult(int code, String message, Object data,int count) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+        this.count = count;
     }
     public JsonResult(int code, String message) {
         this.code = code;
@@ -29,6 +34,10 @@ public class JsonResult{
         return data;
     }
 
+    public int getCount() {
+        return count;
+    }
+
     public static JsonResult success(String message){
         return new JsonResult(Const.success,message);
     }
@@ -43,5 +52,9 @@ public class JsonResult{
 
     public static JsonResult error(String message, Object data){
         return new JsonResult(Const.error,message,data);
+    }
+
+    public static JsonResult success(String message,Object data,int count){
+        return new JsonResult(Const.success,message,data,count);
     }
 }
